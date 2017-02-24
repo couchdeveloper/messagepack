@@ -10,7 +10,7 @@
 
 public struct Decoder {
     private let buffer: UnsafeRawBufferPointer
-    private var position = 0
+    internal private(set) var position = 0
 
     public init(buffer: UnsafeRawBufferPointer) {
         self.buffer = buffer

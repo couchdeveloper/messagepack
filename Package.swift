@@ -11,5 +11,8 @@
 import PackageDescription
 
 let package = Package(
-    name: "MessagePack"
+    name: "MessagePack",
+    dependencies: [
+        .Package(url: "https://github.com/tris-foundation/serialization.git", majorVersion: 0)
+    ]
 )
