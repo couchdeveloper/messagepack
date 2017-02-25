@@ -146,10 +146,9 @@ extension MessagePack: Serializable {
     }
 
     public func serialize(to buffer: UnsafeMutableRawPointer, count: Int) throws -> Int {
-        var encoder = Encoder(reservingCapacity: serializedSize)
-        encoder.encode(self)
-        buffer.copyBytes(from: encoder.bytes, count: encoder.bytes.count)
-        return encoder.bytes.count
+        var encoder = Encoder(start: buffer, count: count)
+        try encoder.encode(self)
+        return encoder.position
     }
 }
 

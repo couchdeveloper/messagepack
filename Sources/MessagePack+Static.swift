@@ -9,10 +9,8 @@
  */
 
 extension MessagePack {
-    public static func encode(_ object: MessagePack) -> [UInt8] {
-        var encoder = Encoder()
-        encoder.encode(object)
-        return encoder.bytes
+    public static func encode(_ object: MessagePack) throws -> [UInt8] {
+        return try object.serialize()
     }
 
     public static func decode(bytes: [UInt8]) throws -> MessagePack {

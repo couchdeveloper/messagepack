@@ -9,6 +9,7 @@
  */
 
 public enum MessagePackError: Error {
+    case notEnoughSpace
     case insufficientData
     case invalidData
 }

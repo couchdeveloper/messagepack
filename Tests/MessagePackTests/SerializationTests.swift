@@ -234,7 +234,7 @@ class SerializationTests: TestCase {
 
     func testSerialization() {
         let object = MessagePack("Hello, World!")
-        let expected = MessagePack.encode(object)
+        let expected = try! MessagePack.encode(object)
 
         var buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: object.serializedSize)
         defer { buffer.deinitialize(count: object.serializedSize) }
@@ -247,7 +247,7 @@ class SerializationTests: TestCase {
 
     func testDeserialization() {
         let expected = MessagePack("Hello, World!")
-        let encoded = MessagePack.encode(expected)
+        let encoded = try! MessagePack.encode(expected)
 
         let (result, read) = try! MessagePack.deserialize(from: encoded, count: encoded.count)
 

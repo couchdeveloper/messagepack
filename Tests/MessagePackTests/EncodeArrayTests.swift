@@ -14,111 +14,122 @@ class EncodeArrayTests: TestCase {
     func testEncodeBoolArray() {
         let booleans: [Bool] = [true, false]
         let expected: [UInt8] = [0x92, 0xc3, 0xc2]
+        var result = [UInt8](repeating: 0, count: 3)
 
-        var encoder = Encoder()
-        encoder.encode(array: booleans)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: booleans)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeUIntArray() {
         let bytes: [UInt] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeUInt8Array() {
         let bytes: [UInt8] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeUInt16Array() {
         let bytes: [UInt16] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeUInt32Array() {
         let bytes: [UInt32] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeUInt64Array() {
         let bytes: [UInt64] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeIntArray() {
         let bytes: [Int] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeInt8Array() {
         let bytes: [Int8] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeInt16Array() {
         let bytes: [Int16] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeInt32Array() {
         let bytes: [Int32] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     func testEncodeInt64Array() {
         let bytes: [Int64] = [0x01, 0x02, 0x03]
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var result = [UInt8](repeating: 0, count: 4)
 
-        var encoder = Encoder()
-        encoder.encode(array: bytes)
+        var encoder = Encoder(start: &result, count: result.count)
+        try! encoder.encode(array: bytes)
 
-        assertEqual(encoder.bytes, expected)
+        assertEqual(result, expected)
     }
 
     static var allTests = [

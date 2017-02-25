@@ -9,68 +9,75 @@
  */
 
 public struct Encoder {
-    public var bytes = [UInt8]()
+    public var buffer: UnsafeMutableRawBufferPointer
+    internal private(set) var position: Int = 0
 
-    public init(reservingCapacity capacity: Int = 1024) {
-        bytes.reserveCapacity(capacity)
+    public init(buffer: UnsafeMutableRawBufferPointer) {
+        self.buffer = buffer
     }
 
-    public mutating func removeAll() {
-        bytes.removeAll(keepingCapacity: true)
+    public init(start: UnsafeMutableRawPointer, count: Int) {
+        self.buffer = UnsafeMutableRawBufferPointer(start: start, count: count)
     }
 
-    mutating func write(_ value: UInt8) {
-        bytes.append(value)
+    public mutating func rewind() {
+        position = 0
     }
 
-    mutating func write(_ value: UInt16) {
-        bytes.append(UInt8(truncatingBitPattern: value >> 8))
-        bytes.append(UInt8(truncatingBitPattern: value))
+    mutating func requestBuffer(size: Int) throws -> UnsafeMutableRawPointer {
+        guard position + size <= buffer.count else {
+            throw MessagePackError.notEnoughSpace
+        }
+        defer { position += size }
+        return buffer.baseAddress! + position
     }
 
-    mutating func write(_ value: UInt32) {
-        bytes.append(UInt8(truncatingBitPattern: value >> 24))
-        bytes.append(UInt8(truncatingBitPattern: value >> 16))
-        bytes.append(UInt8(truncatingBitPattern: value >> 8))
-        bytes.append(UInt8(truncatingBitPattern: value))
+    mutating func write(_ value: UInt8) throws {
+        let buffer = try requestBuffer(size: MemoryLayout<UInt8>.size)
+        buffer.assumingMemoryBound(to: UInt8.self).pointee = value
     }
 
-    mutating func write(_ value: UInt64) {
-        bytes.append(UInt8(truncatingBitPattern: value >> 56))
-        bytes.append(UInt8(truncatingBitPattern: value >> 48))
-        bytes.append(UInt8(truncatingBitPattern: value >> 40))
-        bytes.append(UInt8(truncatingBitPattern: value >> 32))
-        bytes.append(UInt8(truncatingBitPattern: value >> 24))
-        bytes.append(UInt8(truncatingBitPattern: value >> 16))
-        bytes.append(UInt8(truncatingBitPattern: value >> 8))
-        bytes.append(UInt8(truncatingBitPattern: value))
+    mutating func write(_ value: UInt16) throws {
+        let buffer = try requestBuffer(size: MemoryLayout<UInt16>.size)
+        buffer.assumingMemoryBound(to: UInt16.self).pointee = value.byteSwapped
     }
 
-    mutating func write(_ bytes: [UInt8]) {
-        self.bytes.append(contentsOf: bytes)
-    }
-}
-
-extension Encoder {
-    mutating func write(_ value: Int8) {
-        write(UInt8(bitPattern: value))
+    mutating func write(_ value: UInt32) throws {
+        let buffer = try requestBuffer(size: MemoryLayout<UInt32>.size)
+        buffer.assumingMemoryBound(to: UInt32.self).pointee = value.byteSwapped
     }
 
-    mutating func write(_ value: Int16) {
-        write(UInt16(bitPattern: value))
+    mutating func write(_ value: UInt64) throws {
+        let buffer = try requestBuffer(size: MemoryLayout<UInt64>.size)
+        buffer.assumingMemoryBound(to: UInt64.self).pointee = value.byteSwapped
     }
 
-    mutating func write(_ value: Int32) {
-        write(UInt32(bitPattern: value))
-    }
-
-    mutating func write(_ value: Int64) {
-        write(UInt64(bitPattern: value))
+    mutating func write(_ bytes: [UInt8]) throws {
+        let buffer = try requestBuffer(size: bytes.count)
+        buffer.copyBytes(from: bytes, count: bytes.count)
     }
 }
 
 extension Encoder {
-    mutating func write(code value: UInt8) {
-        write(value)
+    mutating func write(_ value: Int8) throws {
+        try write(UInt8(bitPattern: value))
+    }
+
+    mutating func write(_ value: Int16) throws {
+        try write(UInt16(bitPattern: value))
+    }
+
+    mutating func write(_ value: Int32) throws {
+        try write(UInt32(bitPattern: value))
+    }
+
+    mutating func write(_ value: Int64) throws {
+        try write(UInt64(bitPattern: value))
+    }
+}
+
+extension Encoder {
+    mutating func write(code value: UInt8) throws {
+        try write(value)
     }
 }
